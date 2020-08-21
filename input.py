@@ -8,6 +8,12 @@ import re
 regex = re.compile(r'-(\d)\b')
 
 
+def clear_board(board):
+    for i in range(4):
+        for j in range(4):
+            board[i][j] = 0
+
+
 def update_location(tile_container, board):
     # parse tile-container html
     html = tile_container.get_attribute('innerHTML')
@@ -15,6 +21,7 @@ def update_location(tile_container, board):
     # convert to soup
     soup = bs(html, 'lxml')
     divs = soup.find_all('div', attrs={'class': 'tile'})
+    clear_board(board)
     for div in divs:
         y, x = regex.findall(div['class'][2])
         x = int(x) - 1
@@ -24,7 +31,4 @@ def update_location(tile_container, board):
 
     for row in board:
         print(*row)
-    print('--------')
-
-
-
+    print('-------')
